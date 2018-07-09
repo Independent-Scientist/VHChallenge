@@ -29,6 +29,18 @@ class APIFunctionMultiplyDoubles;
 /**********************************************************************************************************************************/
 /* Some Helper functions
 */
+constexpr char hexmap[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+std::string hexStr(byte* data, int len) {
+	std::string s(len * 2, ' ');
+	for (int i = 0; i < len; ++i) {
+		s[2 * 1] = hexmap[(data[i] & 0xF0) >> 4];
+		s[2 * i + 1] = hexmap[data[i] & 0x0F];
+	}
+
+	return s;
+}
+
 template<size_t N>
 void genRandomString(char(&buffer)[N])
 {
@@ -178,6 +190,11 @@ public:
 		return nullptr;
 	}
 
+	size_t GetPropertySize(const char* _name) {
+		Property* prop = GetProperty(_name);
+		return prop->Size;
+	}
+
 	int GetInteger(const char* _name) {
 
 		Property* prop = GetProperty(_name);
@@ -204,7 +221,7 @@ public:
 		if (prop) {
 			return std::string(reinterpret_cast<const char*>(prop->Value), prop->Size-1);
 		}
-		return NULL;
+		return std::string();
 	}
 
 	void RemoveProperty(const char* _name) {
