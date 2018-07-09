@@ -23,6 +23,7 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
+
+\.vs/VHSLChallenge/v15/
